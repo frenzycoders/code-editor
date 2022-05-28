@@ -1,0 +1,26 @@
+server/node_modules
+server/dist
+vite-ui/node_modules
+vite-ui/logs
+vite-ui/*.log
+vite-ui/npm-debug.log*
+vite-ui/yarn-debug.log*
+vite-ui/yarn-error.log*
+vite-ui/pnpm-debug.log*
+vite-ui/lerna-debug.log*
+
+
+vite-ui/dist
+vite-ui/dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+vite-ui/*.njsproj
+vite-ui/*.sln
+vite-ui/*.sw?
