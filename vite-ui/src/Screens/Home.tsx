@@ -58,13 +58,15 @@ export default function Home() {
         if (socket.connected) {
             setConnectionState(true);
 
-            socket.on('EXIT_TERMINAL', () => {
-                setTerminalOpen(false);
-            });
+
 
         } else {
             setConnectionState(false);
         }
+
+        socket.on('EXIT_TERMINAL', () => {
+            setTerminalOpen(false);
+        });
 
     }, []);
 
