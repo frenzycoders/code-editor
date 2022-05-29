@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios"
-import { api_adress, ServerDetails } from "./server_details"
+import { api_adress, entityType, ServerDetails } from "./server_details"
 
 export const GETserverInfo: Function = async () => {
     try {
@@ -23,8 +23,22 @@ export const readFs: Function = async (path: string) => {
             url: api_adress + 'fs?path=' + path
         });
 
-        return response.data as string[];
+        return response.data.dirs as entityType[];
     } catch (error) {
         throw error
+    }
+}
+
+
+export const readFilesData: Function = async (path: string) => {
+    try {
+        let response: AxiosResponse = await axios({
+            method: 'GET',
+            url: api_adress + 'read-data?path=' + path
+        });
+
+        return response.data.data;
+    } catch (error) {
+        throw error;
     }
 }

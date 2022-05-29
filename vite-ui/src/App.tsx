@@ -122,6 +122,7 @@ import { useContext, useEffect, useState } from 'react';
 import { GETserverInfo } from './Types/features';
 import { CircularProgress } from '@mui/material';
 import { dataContext } from './context/dataContext';
+import { socket, SocketContext } from './context/socket';
 
 
 export default function App() {
@@ -160,7 +161,9 @@ export default function App() {
           </div>
         </>) : appState === DONE ? (<>
           <dataContext.Provider value={serverInfo}>
-            <Home />
+            <SocketContext.Provider value={socket}>
+              <Home />
+            </SocketContext.Provider>
           </dataContext.Provider>
         </>) : (<>
           <div className='item-center'>

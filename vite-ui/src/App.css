@@ -100,7 +100,9 @@ strong{
     height: 89vh;
     overflow-x: hidden;
 }
-
+.entities::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
 .refresh-button{
     display: flex;
     flex-direction: row-reverse;
@@ -108,4 +110,78 @@ strong{
     float: right;
     padding-right: 5px;
     align-items: center;
+}
+
+.right-header {
+    margin-left: 10px;
+}
+
+.modal-paper {
+    display: list-item;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: rgba(0, 0, 0, 0.84);
+    height: 85%;
+    width: 100%;
+
+}
+.row-scroll {
+    margin-right: 5px;
+    display: list-item;
+    overflow-x: scroll;
+
+}
+.action-buttons {
+    display: flex;
+    flex-direction: row-reverse;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+}
+
+.open-files {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    background-color: rgb(22, 20, 22);
+
+}
+.open-files::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+.open-file-item {
+    max-width: 150px;
+    text-overflow: clip;
+    height: 100%;
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.dot {
+    
+    height: 5px;
+    width: 5px;
+    margin-right: 5px;
+    border-radius: 10px 10px 10px 10px;
+    background-color: white;
+
+}
+.open-file-item:hover {
+    background-color: grey;
+}
+
+.connection-dot {
+    height: 5px;
+    width: 5px;
+    border-radius: 8px 8px 8px 8px;
+}
+
+#terminal-view::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
 }

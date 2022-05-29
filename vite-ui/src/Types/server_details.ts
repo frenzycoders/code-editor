@@ -7,7 +7,16 @@ export type ServerDetails = {
     platform: String,
     release: String,
 }
+export type entityType = {
+    name: String,
+    path: String,
+    isFile: Boolean,
+}
 
+export type openFile = {
+    path: string,
+    saved: Boolean
+}
 export const INIT = 'INIT';
 export const LOADING = 'LOADING';
 export const ERROR = 'ERROR';

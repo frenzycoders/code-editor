@@ -1,8 +1,8 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { SyntheticEvent, useContext, useEffect, useState } from 'react';
+import { Key, SyntheticEvent, useContext, useEffect, useState } from 'react';
 import { dataContext } from '../context/dataContext';
-import { DONE, ERROR, INIT, LOADING, ServerDetails } from '../Types/server_details';
+import { DONE, entityType, ERROR, INIT, LOADING, ServerDetails } from '../Types/server_details';
 import { readFs } from '../Types/features';
 import { CircularProgress, IconButton } from '@mui/material';
 import FileItem from './widgets/FileItem';
@@ -10,25 +10,28 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import FolderIcon from './../assets/icons/folder.svg'
 import FileIcon from './../assets/icons/file.png'
 
-export default function FileManager() {
+type Props = {
+    url: string,
+    setUrl: Function,
+    openExplorer: Boolean,
+    setOpenExplorer: Function,
+    setCurrentOpenFile: Function,
+}
 
-    const [open, setOpen] = useState(false);
+export default function FileManager({ url, setUrl, openExplorer, setOpenExplorer, setCurrentOpenFile }: Props) {
+
+
     let data = useContext(dataContext) as ServerDetails;
 
-    const [rootUrl, setRootUrl] = useState('/VITE-UI');
-    const [dirs, setDirs] = useState(['']);
+
+    const [dirs, setDirs] = useState<entityType[]>([{ name: '', isFile: true, path: '/' }]);
     const [ComponentState, setComponentState] = useState(INIT);
     const [errMessage, setErrorMessage] = useState('NOT_FOUND');
 
 
-    useEffect(() => {
-        setRootUrl(data.homedir);
-    }, [data]);
-
-
     const openHandler = async (e: SyntheticEvent) => {
-        setOpen(!open);
-        if (open === false) {
+        setOpenExplorer(!openExplorer);
+        if (openExplorer === false) {
             await readDirs();
         }
     }
@@ -37,7 +40,7 @@ export default function FileManager() {
     const readDirs = async () => {
         try {
             setComponentState(LOADING);
-            let dir: string[] = await readFs(rootUrl) as string[];
+            let dir: entityType[] = await readFs(url) as entityType[];
             setDirs(dir);
             setComponentState(DONE);
             console.log(dir)
@@ -56,14 +59,16 @@ export default function FileManager() {
 
     }
 
+
+
     return (
         <div>
             <div id="header" style={{ display: 'flex', flexDirection: 'row', color: 'whitesmoke', fontSize: 'small', paddingLeft: '8px', borderBottom: '1px solid' }}>
                 {
-                    open ? <ExpandMoreIcon height={10} /> : <ChevronRightIcon height={10} />
+                    openExplorer ? <ExpandMoreIcon height={10} /> : <ChevronRightIcon height={10} />
                 }
                 <div style={{ padding: '1%', fontWeight: '500', cursor: 'pointer', }} onClick={openHandler}>
-                    <strong>{rootUrl.split('/')[rootUrl.split('/').length - 1]}</strong>
+                    <strong>{url.split('/')[url.split('/').length - 1]}</strong>
                 </div>
                 <div className="refresh-button">
 
@@ -83,7 +88,7 @@ export default function FileManager() {
 
             <div className="entities" style={{ paddingLeft: '3%', color: 'white', alignItems: 'center', justifyContent: 'center' }}>
                 {
-                    open ? (<>
+                    openExplorer ? (<>
                         {
                             ComponentState === LOADING ? <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                                 <CircularProgress size={18} />
@@ -96,7 +101,7 @@ export default function FileManager() {
                                     dirs.length > 0 ? (<>
                                         {
                                             dirs.map((e) => {
-                                                return <FileItem isFile={false} path={rootUrl + '/' + e} key={e} />
+                                                return <FileItem isFile={e.isFile} path={e.path as string} key={e.path as Key} selectPath={({ path, isFile }: any) => setCurrentOpenFile({ path, isFile })} />
                                             })
                                         }
                                     </>) : (<>
@@ -108,7 +113,7 @@ export default function FileManager() {
                         }
                     </>) : (<>
                         <div style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                           <span style={{ color: 'whitesmoke', paddingLeft: '5px' }}> Press on <strong>{rootUrl.split('/')[rootUrl.split('/').length - 1]}</strong> for explore file manager and browse files and folders</span>
+                            <span style={{ color: 'whitesmoke', paddingLeft: '5px' }}> Press on <strong>{url.split('/')[url.split('/').length - 1]}</strong> for explore file manager and browse files and folders</span>
                         </div>
                     </>)
                 }

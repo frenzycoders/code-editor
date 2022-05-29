@@ -1,7 +1,7 @@
 import { createServer, Server as HttpServer } from 'http'
 import { Server, Socket } from 'socket.io'
 import Express, { Application } from 'express';
-import pty, { IPty, spawn } from 'node-pty'
+import pty, { IPty, spawn, } from 'node-pty'
 import { platform } from 'node:os';
 import cors from 'cors';
 import { createConnection } from 'mysql'
@@ -42,23 +42,65 @@ const PORT = 8080;
 
 
 
-// io.on('connection', (socket: Socket) => {
-//     console.log('connect with client: ', socket.id);
+io.on('connection', (socket: Socket) => {
+    console.log('connect with client: ', socket.id);
 
-//     socket.on('input', (data: any) => {
-//         ptyProcess.write(data);
-//     })
-
-//     ptyProcess.onData((data) => {
-//         console.log(data)
-//         socket.emit("output", data);
-//     })
+    let pty: IPty;
 
 
-//     socket.on('disconnect', () => {
-//         console.log('Disconnected with client: ', socket.id);
-//     })
-// })
+
+    socket.on('CREATE_TERMINAL', (action: any) => {
+        console.log('hey');
+        pty = spawn(shell, [], {
+            name: 'xterm-color',
+            cwd: process.env.HOME,
+            env: process.env,
+        })
+
+        pty.onData((e: string) => {
+            socket.emit('OUTPUT', e);
+        })
+
+        pty.onExit((e: any) => {
+            socket.emit('EXIT_TERMINAL')
+        })
+
+        pty.write(action + '\r');
+    });
+
+
+    socket.on('TERMINAL_INPUT', (cmd: string) => {
+        console.log(cmd)
+        if (pty) {
+            pty.write(cmd);
+        }
+    })
+
+
+
+    socket.on('REMOVE_TERMINAL_WITH_THIS_ID', () => {
+        pty.kill();
+    })
+
+
+    // socket.on('input', (data: any) => {
+    //     ptyProcess.write(data);
+    // })
+
+    // ptyProcess.onData((data) => {
+    //     console.log(data)
+    //     socket.emit("output", data);
+    // })
+
+
+    // socket.on('disconnect', () => {
+    //     console.log('Disconnected with client: ', socket.id);
+    // })
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected with socket id', socket.id)
+    })
+})
 
 
 app.use('/api', api);
