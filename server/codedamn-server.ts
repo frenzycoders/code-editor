@@ -32,7 +32,7 @@ const io = new Server(server, {
     }
 });
 
-const PORT = 8080;
+const PORT = 8090;
 
 // let ptyProcess = spawn(shell, [], {
 //     name: 'xterm-color',

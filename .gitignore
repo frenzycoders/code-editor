@@ -8,8 +8,6 @@ vite-ui/yarn-error.log*
 vite-ui/pnpm-debug.log*
 vite-ui/lerna-debug.log*
 
-
-vite-ui/dist
 vite-ui/dist-ssr
 *.local
 

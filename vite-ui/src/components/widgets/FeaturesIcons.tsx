@@ -63,11 +63,11 @@ export default function FeaturesIcons({ onTerminalTap, onFolderTap, setOpenExplo
                 <div>
                     <strong>CODE EDITOR [ <span style={{ color: 'green' }}>{data.hostname}@{data.platform}-{data.arch}</span> ]</strong>
                 </div>
-                <div className='right-header'>
-                    TOTAL MEMORY : <span style={{ color: 'green' }}>{data.totalmem} GB</span>
+                <div>
+                    <strong><h5>TOTAL MEMORY [ <span style={{ color: 'green' }}>{data.totalmem+' GB'}</span> ]</h5></strong>
                 </div>
-                <div className='right-header'>
-                    FREE MEMORY : <span style={{ color: 'green' }}>{data.freemem} GB</span>
+                <div>
+                    <strong><h5>FREE MEMORY [ <span style={{ color: 'green' }}>{data.freemem+' GB'}</span> ]</h5></strong>
                 </div>
                 <IconButton color='default' onClick={handleOpen} children={<img src={FolderLogo} height='28px' />} />
                 <IconButton color='default' onClick={() => onTerminalTap()} children={<TerminalSharpIcon color={isTerminalOpen === true ? 'info' : 'warning'} />} />
