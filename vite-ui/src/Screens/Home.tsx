@@ -183,7 +183,7 @@ export default function Home() {
                             }) : (<></>)
                         }
                     </div>
-                    <div className='editor' style={{ height: editor.height - tConfig.height }}>
+                    <div className='editor' style={{ height: editor.height - (tConfig.height+50) }}>
                         {
                             openFiles.length === 0 ? (<>
 

@@ -53,6 +53,6 @@ export default function TerminalUI({ tConfig, channel }: terminalData) {
         })
     }
     return (
-        <div id="terminal-view" style={{ height: '400px', width: tConfig.width, }} ></div>
+        <div id="terminal-view" style={{ height: '300px', width: tConfig.width, }} ></div>
     )
 }

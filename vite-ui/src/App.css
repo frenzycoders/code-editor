@@ -131,6 +131,10 @@ strong{
     overflow-x: scroll;
 
 }
+.row-scroll::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
 .action-buttons {
     display: flex;
     flex-direction: row-reverse;

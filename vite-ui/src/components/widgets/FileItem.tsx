@@ -101,9 +101,9 @@ export default function FileItem({ path, isFile, selectPath }: entities) {
                                 </>) : (<>
                                     {
                                         dirs.map((e) => {
-                                            return (<div style={{ marginLeft: '10px' }}>
+                                            return (<div style={{ marginLeft: '10px' }} key={e.path as Key}>
 
-                                                <FileItem isFile={e.isFile} path={e.path as string} key={e.path as Key} selectPath={selectPath} />
+                                                <FileItem isFile={e.isFile} path={e.path as string}  selectPath={selectPath} />
                                             </div>)
                                         })
                                     }

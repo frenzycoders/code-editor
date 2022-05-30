@@ -32,7 +32,7 @@ export default function FeaturesIcons({ onTerminalTap, onFolderTap, setOpenExplo
     let data = useContext(dataContext) as ServerDetails;
 
     const [dirs, setDirs] = useState<entityType[]>([{ name: '', isFile: true, path: '/' }]);
-    const [selected, setSelected] = useState('/');
+    const [selected, setSelected] = useState({ path: '/', isFile: false });
 
     useEffect(() => {
         readRootDirs();
@@ -48,13 +48,14 @@ export default function FeaturesIcons({ onTerminalTap, onFolderTap, setOpenExplo
     }
 
 
-    const setRootUrl = () => {
+    const setRootUrl: Function = () => {
+        console.log(selected);
         if (selected !== null) {
-            localStorage.setItem('rootUrl', selected);
+            localStorage.setItem('rootUrl', selected.path);
             setOpenExplorer(false);
-            onFolderTap(selected);
+            onFolderTap(selected.path);
             handleClose()
-            setSelected('/')
+            setSelected(selected);
         }
     }
     return (
@@ -64,10 +65,10 @@ export default function FeaturesIcons({ onTerminalTap, onFolderTap, setOpenExplo
                     <strong>CODE EDITOR [ <span style={{ color: 'green' }}>{data.hostname}@{data.platform}-{data.arch}</span> ]</strong>
                 </div>
                 <div>
-                    <strong><h5>TOTAL MEMORY [ <span style={{ color: 'green' }}>{data.totalmem+' GB'}</span> ]</h5></strong>
+                    <strong><h5>TOTAL MEMORY [ <span style={{ color: 'green' }}>{data.totalmem + ' GB'}</span> ]</h5></strong>
                 </div>
                 <div>
-                    <strong><h5>FREE MEMORY [ <span style={{ color: 'green' }}>{data.freemem+' GB'}</span> ]</h5></strong>
+                    <strong><h5>FREE MEMORY [ <span style={{ color: 'green' }}>{data.freemem + ' GB'}</span> ]</h5></strong>
                 </div>
                 <IconButton color='default' onClick={handleOpen} children={<img src={FolderLogo} height='28px' />} />
                 <IconButton color='default' onClick={() => onTerminalTap()} children={<TerminalSharpIcon color={isTerminalOpen === true ? 'info' : 'warning'} />} />
@@ -93,7 +94,7 @@ export default function FeaturesIcons({ onTerminalTap, onFolderTap, setOpenExplo
                             dirs.length > 0 ? (<>
                                 {
                                     dirs.map((e) => {
-                                        return <FileItem isFile={e.isFile} path={e.path as string} key={e.path as Key} selectPath={(path: string) => setSelected(path)} />
+                                        return <FileItem isFile={e.isFile} path={e.path as string} key={e.path as Key} selectPath={({ path, isFile }: any) => setSelected({ path: path as string, isFile: isFile })} />
                                     })
                                 }
                             </>) : (<>Empty</>)
@@ -101,10 +102,10 @@ export default function FeaturesIcons({ onTerminalTap, onFolderTap, setOpenExplo
                     </div>
                     <div className='action-buttons'>
 
-                        <Button variant='contained' style={{ marginRight: '10px' }} onClick={setRootUrl} >SELECT</Button>
+                        <Button variant='contained' style={{ marginRight: '10px' }} onClick={() => setRootUrl()} >SELECT</Button>
                         <Button variant='contained' color='secondary' style={{ marginRight: '10px' }} onClick={handleClose} >CANCLE</Button>
                         <div className="row-scroll">
-                            <span style={{ color: "white", marginRight: '20px' }}>{selected}</span>
+                            <span style={{ color: "white", marginRight: '20px' }}>{selected.path}</span>
                         </div>
                     </div>
                 </Box>
