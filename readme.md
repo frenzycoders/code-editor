@@ -31,13 +31,13 @@ and,
     npm i -D
 ```
     - open server_details.ts which is located in vite-ui/src/Types/ folder
-[!App Screenshot](./server_details.png)
+[server_details.ts image](./server_details.png)
 ```bash
     you can change value of api_adress this variable contains root url of your server 
 ```
     - if you change value in server_details.ts file then you also have to change url value for socket connection
     - open socket.tsx file which is located in vite-ui/src/context/socket.tsx and change
-[!App Screenshot](./socket.png)
+[socket.tsx image](./socket.png)
 ```bash
     export const socket = io('http://localhost');
 ```
