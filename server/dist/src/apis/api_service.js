@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.renameFile = exports.copyEntity = exports.readFileData = exports.deleteEntity = exports.createFile = exports.createFolder = exports.read_fileSystem = exports.server_configs = void 0;
+exports.renameFile = exports.copyEntity = exports.writeDataInFile = exports.readFileData = exports.deleteEntity = exports.createFile = exports.createFolder = exports.read_fileSystem = exports.server_configs = void 0;
 const node_os_1 = require("node:os");
 const promises_1 = require("node:fs/promises");
 const server_configs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -142,6 +142,28 @@ const readFileData = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.readFileData = readFileData;
+const writeDataInFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let { path } = req.query;
+        let { data } = req.body;
+        console.log(path);
+        if (!path || !data)
+            return res.status(404).send('path or data not found');
+        else {
+            let state = yield (0, promises_1.stat)(path.toString());
+            if (state.isFile()) {
+                yield (0, promises_1.writeFile)(path.toString(), data);
+                return res.status(200).send('file with path [' + path + '] was updated');
+            }
+            else
+                res.status(500).send('this path is not a file');
+        }
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+exports.writeDataInFile = writeDataInFile;
 const copyEntity = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let { source, destination } = req.query;
