@@ -123,7 +123,8 @@ import { GETserverInfo } from './Types/features';
 import { CircularProgress } from '@mui/material';
 import { dataContext } from './context/dataContext';
 import { socket, SocketContext } from './context/socket';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
 
@@ -163,6 +164,7 @@ export default function App() {
           <dataContext.Provider value={serverInfo}>
             <SocketContext.Provider value={socket}>
               <Home />
+              <ToastContainer />
             </SocketContext.Provider>
           </dataContext.Provider>
         </>) : (<>

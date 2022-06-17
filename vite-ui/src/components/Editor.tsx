@@ -2,12 +2,16 @@ import CodeEditor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react'
 import { BreakfastDiningOutlined } from '@mui/icons-material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useEffect, useState } from 'react';
-import { readFilesData } from '../Types/features';
+import { readFilesData, writeDataInFile } from '../Types/features';
 import { DONE, ERROR, INIT, LOADING, openFile } from '../Types/server_details';
-
+import { useDebounce, useDebouncedCallback } from 'use-debounce';
+import { toast } from 'react-toastify';
 type path = {
-    currentFile: openFile
+    currentFile: openFile,
+    setCurrentOpen: Function,
 }
+
+
 
 const returnLanguage = (ext: string) => {
     switch (ext) {
@@ -29,7 +33,7 @@ const returnLanguage = (ext: string) => {
 }
 
 
-function Editor({ currentFile }: path) {
+function Editor({ currentFile, setCurrentOpen }: path) {
     const [codes, setCodes] = useState('//Welcome Users');
     const [ext, setExit] = useState(returnLanguage(currentFile.path.split('.')[currentFile.path.split('.').length - 1]));
     const [ComponentState, setComponentState] = useState(INIT);
@@ -52,6 +56,24 @@ function Editor({ currentFile }: path) {
         }
     }
 
+    const debounced = useDebouncedCallback(
+        // function
+        (value) => {
+            writeFiles(value);
+            setCodes(value);
+        },
+        // delay in ms
+        1000
+    );
+
+    const writeFiles = async (data: any) => {
+        try {
+            await writeDataInFile(currentFile.path, data);
+        } catch (error: any) {
+            toast(error.message, { type: 'error' });
+        }
+    }
+
     return (
         <>
             {
@@ -65,6 +87,10 @@ function Editor({ currentFile }: path) {
                 </div> : <CodeEditor
                     // defaultLanguage='javascript'
                     defaultValue={codes}
+                    onChange={(newValue) => {
+                        if (newValue != undefined)
+                            debounced(newValue);
+                    }}
                     language={ext}
                     theme='vs-dark'
                     loading={<CircularProgress />}

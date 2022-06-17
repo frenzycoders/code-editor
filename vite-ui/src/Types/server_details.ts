@@ -25,4 +25,4 @@ export const DONE = 'DONE';
 
 export const ComponenetState = [INIT, LOADING, ERROR, DONE]
 
-export const api_adress = 'http://api.code-editor.myportfolio.club/api/';
+export const api_adress = 'http://localhost:8090/api/' //'http://api.code-editor.myportfolio.club/api/';

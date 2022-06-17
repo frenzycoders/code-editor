@@ -34,7 +34,7 @@ export const read_fileSystem = async (req: Request, res: Response) => {
         })
         let files: entityType[] = [];
 
-        dirs =  dirs.filter((value: entityType) => {
+        dirs = dirs.filter((value: entityType) => {
             if (value.isFile === false) {
                 return value;
             } else {
@@ -115,6 +115,25 @@ export const readFileData = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).send(error.message);
     }
+}
+
+export const writeDataInFile = async (req: Request, res: Response) => {
+    try {
+        let { path } = req.query;
+        let { data } = req.body;
+        console.log(path);
+        if (!path || !data) return res.status(404).send('path or data not found');
+        else {
+            let state = await stat(path.toString());
+            if (state.isFile()) {
+                await writeFile(path.toString(), data);
+                return res.status(200).send('file with path [' + path + '] was updated');
+            } else res.status(500).send('this path is not a file');
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+
 }
 
 export const copyEntity = async (req: Request, res: Response) => {

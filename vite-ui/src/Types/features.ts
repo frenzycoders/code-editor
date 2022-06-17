@@ -42,3 +42,17 @@ export const readFilesData: Function = async (path: string) => {
         throw error;
     }
 }
+
+export const writeDataInFile: Function = async (path: string, data: string) => {
+    try {
+        let response: AxiosResponse = await axios({
+            method: 'POST',
+            url: api_adress + 'write-data?path=' + path,
+            data: {
+                data: data,
+            }
+        });
+    } catch (error) {
+        throw error;
+    }
+}

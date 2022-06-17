@@ -146,6 +146,9 @@ export default function Home() {
         });
 
         setOpenFiles(files);
+        if (files.length > 0) {
+            setCurrentOpen(files[files.length - 1]);
+        }
     }
     return (
         <dataContext.Provider value={data}>
@@ -174,7 +177,9 @@ export default function Home() {
                                             <FilesIcons path={e.path as string} key={e.path as Key} />
                                         </div>
                                         <span style={{ color: 'whitesmoke', maxWidth: '100px', textOverflow: 'clip', padding: '7px', overflow: 'hidden', position: 'revert', fontSize: '10px' }}>{e.path.split('/')[e.path.split('/').length - 1]}</span>
-                                        <div className='dot'></div>
+                                        {
+                                            currentOpen.path === e.path ? !currentOpen.saved ? <div className='dot'></div> : null : null
+                                        }
                                         <div style={{ marginRight: '5px' }} onClick={() => removeFilesFromOpenList(e.path)}>
                                             <ClearIcon color='info' fontSize='inherit' />
                                         </div>
@@ -183,12 +188,12 @@ export default function Home() {
                             }) : (<></>)
                         }
                     </div>
-                    <div className='editor' style={{ height: editor.height - (tConfig.height+50) }}>
+                    <div className='editor' style={{ height: editor.height - (tConfig.height + 50) }}>
                         {
                             openFiles.length === 0 ? (<>
 
                             </>) : (<>
-                                <Editor currentFile={currentOpen} />
+                                <Editor currentFile={currentOpen} setCurrentOpen={setCurrentOpen} />
                             </>)
                         }
                     </div>
