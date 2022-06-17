@@ -5,12 +5,11 @@
 
 ## LOCAL SETUP
     # SERVER SETUP 
-    - Clone repository and navigate in server folder of this repository
-    ```bash
-        npm i
-    ```
-    and,
-    ```bash
-        npm i -D
-    ```
-    
+    - cd code-editor/server
+    - npm i 
+    - npm i -D
+    - npm run dev
+
+    - server started at port 8090 by using these commands
+
+    # CLIENT SETUP
