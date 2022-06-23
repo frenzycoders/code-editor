@@ -49,6 +49,12 @@ to,
 ```bash
     export const socket = io('http://127.0.0.1:8090')
 ```
+-Now you are good to go setup for local is completed.
+-Navigate into vite-ui and run this command.
+```bash
+    npm run dev
+```
+
 
 ## Tech Stack
 
